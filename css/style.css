@@ -34,7 +34,7 @@
 
 /* Tablet */
 @media (min-width: 40em) {
-    :root{
+    :root {
         --fs-800: 5rem;
         --fs-700: 2.5rem;
         --fs-600: 1.5rem;
@@ -44,7 +44,7 @@
 
 /* Monitors and Laptops */
 @media (min-width: 64em) {
-    :root{
+    :root {
         --fs-800: 6.25rem;
         --fs-700: 3.5rem;
         --fs-600: 2rem;
@@ -149,18 +149,17 @@ body {
 
 .flex {
     display: flex;
-    gap: var(--gap, 1rem);  /* Can use --gap inside custom classes or root */
+    gap: var(--gap, 1rem); /* Can use --gap inside custom classes or root */
 }
 
 .grid {
     display: grid;
-    gap: var(--gap, 1rem);  /* Can use --gap inside custom classes or root */
+    gap: var(--gap, 1rem); /* Can use --gap inside custom classes or root */
 }
 
 .block {
     display: block;
 }
-
 
 .flow > *:where(:not(:first-child)) {
     margin-top: var(--flow-space, 1rem);
@@ -196,21 +195,23 @@ body {
     outline: 1px solid white;
 } */
 
-
-@media (min-width: 64em){
-    .grid-container{
+@media (min-width: 64em) {
+    .grid-container {
         text-align: left;
         grid-auto-flow: column;
         column-gap: var(--container-gap, 2rem);
-        grid-template-columns: minmax(1rem, 1fr) repeat(2, minmax(0, 40rem)) minmax(1rem, 1fr);
+        grid-template-columns: minmax(1rem, 1fr) repeat(2, minmax(0, 40rem)) minmax(
+                1rem,
+                1fr
+            );
     }
-    
+
     .grid-container > *:first-child {
         grid-column-start: 2;
         /* outline: 1px solid red; */
     }
-    
-    .grid-container > *:last-child{
+
+    .grid-container > *:last-child {
         grid-column-start: 3;
         /* outline: 1px solid white; */
     }
@@ -226,15 +227,14 @@ body {
     } */
 }
 
-
-@media (min-width: 100rem){
-    :root{
+@media (min-width: 100rem) {
+    :root {
         font-size: 18px;
     }
 }
 
 @media (min-width: 125rem) {
-    :root{
+    :root {
         font-size: 20px;
     }
 }
@@ -255,6 +255,8 @@ body {
 /* Components */
 /*------------*/
 
+/* Numbered Tiles */
+
 .numbered-title {
     font-family: var(--ff-sans-cond);
     font-size: var(--fs-500);
@@ -266,6 +268,8 @@ body {
     color: hsl(var(--clr-white) / 0.3);
     font-weight: bold;
 }
+
+/* Explore Button */
 
 .explore-button {
     font-size: clamp(1.25rem, 2vw + 1rem, 2rem);
@@ -292,7 +296,8 @@ body {
         transform 500ms cubic-bezier(0.39, 0.58, 0.57, 1);
 }
 
-.explore-button:hover::after {
+.explore-button:hover::after,
+.explore-button:focus::after {
     opacity: 1;
     transform: scale(1.5);
 }
@@ -301,14 +306,26 @@ body {
 
 .explore-button:hover{
     box-shadow: 0 0 0 4rem hsl(var(--clr-white)/0.15);
-} */
+} 
+
+*/
+
+/* Primary Header */
 
 .primary-navigation {
-    --gap: 8rem;
-    --underline-gap: 2em;
-    background-color: hsl(var(--clr-white) / 0.04);
+    --gap: 4rem;
+    --underline-gap: 2rem;
     list-style: none;
-    justify-content: center;
+    background-color: hsl(var(--clr-dark) / 0.98);
+    /* backdrop-filter: blur(5rem); */
+    padding-inline: 3em;
+}
+
+@supports (backdrop-filter: blur(1rem)) {
+    .primary-navigation {
+        background-color: hsl(var(--clr-white) / 0.04);
+        backdrop-filter: blur(5rem);
+    }
 }
 
 .primary-navigation a {
@@ -317,8 +334,82 @@ body {
 
 .primary-navigation a > span {
     font-weight: 700;
-    margin-inline-end: 0.6rem;
+    margin-inline-end: 0.5em;
 }
+
+.nav-toggle {
+    display: none;
+}
+
+@media (max-width: 64rem) {
+    .primary-navigation {
+        --gap: 3rem;
+    }
+
+    .primary-navigation a > span {
+        display: none;
+    }
+}
+
+@media (max-width: 40rem) {
+    .primary-navigation {
+        --gap: clamp(2rem, 8vmin + 1rem, 10rem);
+        flex-direction: column;
+        position: fixed;
+        z-index: 100;
+        inset: 0 0 0 30%;
+        padding: 0;
+        padding-block: min(20vh, 8rem);
+        padding-inline-start: max(2rem, 10%);
+        transform: translateX(100%);
+        transition: transform 500ms ease-in-out;
+    }
+
+    .primary-navigation--open {
+        transform: translateX(0);
+    }
+
+    .primary-navigation a > span {
+        display: inline;
+    }
+
+    .primary-navigation.underline-indicators > * {
+        padding-inline-end: var(--underline-gap, 1em);
+        padding-block: 0;
+        border: 0;
+        border-right: 0.2rem solid hsl(var(--clr-white) / 0);
+    }
+
+    .nav-toggle {
+        display: block;
+        position: absolute;
+        z-index: 200;
+        top: 2rem;
+        right: 2rem;
+        width: 1.5rem;
+        aspect-ratio: 1;
+        border: 0;
+        background-image: url("../assets/images/shared/icon-hamburger.svg");
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-position: center;
+
+        transition: background 300ms ease, 
+        transform 300ms linear;
+    }
+
+    .nav-toggle[aria-expanded="true"]{
+        background-image: url("../assets/images/shared/icon-close.svg");
+        transform: rotate(90deg);
+    }
+
+    .nav-toggle:focus-visible{
+        outline: 5px solid hsl(var(--clr-white)/0.5);
+        outline-offset: 5px;
+    }
+}
+
+/* Underline Indicators */
 
 .underline-indicators > * {
     cursor: pointer;
@@ -335,14 +426,17 @@ body {
 
 .underline-indicators > .active,
 .underline-indicators > [aria-selected="true"] {
-    color: hsl(var(--clr-white));
     border-color: hsl(var(--clr-white) / 1);
 }
+
+/* Tabs List */
 
 .tabs-list {
     --gap: 2rem;
     justify-content: center;
 }
+
+/* Dot Slider */
 
 .dot-slider {
     --gap: 1.5rem;
@@ -368,6 +462,8 @@ body {
 .dot-slider > [aria-selected="true"] {
     background-color: hsl(var(--clr-white));
 }
+
+/* Numerical Slider */
 
 .num-slider {
     --gap: 2rem;
@@ -398,25 +494,25 @@ body {
 /* Page Backgrounds */
 /*------------------*/
 
-body{
+body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: bottom right;
 }
 
-.home{
+.home {
     background-image: url("../assets/images/home/background-home-mobile.jpg");
 }
 
 @media (min-width: 40rem) {
-    .home{
+    .home {
         background-position: center center;
         background-image: url("../assets/images/home/background-home-tablet.jpg");
     }
 }
 
 @media (min-width: 64rem) {
-    .home{
+    .home {
         background-image: url("../assets/images/home/background-home-desktop.jpg");
     }
 }
